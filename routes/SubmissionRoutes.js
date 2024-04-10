@@ -5,7 +5,7 @@ const router = express.Router();
 // Route to fetch assignment submissions
 router.post("/:courseId/:assignmentId", async (req, res) => {
     try {
-        const token = process.env.TOKEN ? process.env.TOKEN:   req.query.token;
+        const token = req.query.token;
         const { courseId, assignmentId } = req.params;
         if (!token) {
           return res.status(400).json({ error: "Token is required" });
@@ -35,8 +35,7 @@ router.post(
       try {
         const { courseId, assignmentId, userId } = req.params;
         const { token, ...data } = req.body;
-        const tokens = process.env.TOKEN ? process.env.TOKEN:   token
-        if (!tokens) {
+        if (!token) {
           return res.status(400).json({ error: "Token is required" });
         }
         const config = {
@@ -49,9 +48,10 @@ router.post(
           }/submissions/${userId}/comments/files`,
           data,
           headers: {
-            Authorization: `Bearer ${tokens}`,
+            Authorization: `Bearer ${token}`,
           },
         };
+        console.log(config.url);
         const response = await axios.request(config);
         res.json(response.data);
       } catch (error) {
@@ -65,8 +65,7 @@ router.post(
       try {
         const { token, comment } = req.query;
         const { courseId, assignmentId, userId } = req.params;
-        const tokens = process.env.TOKEN ? process.env.TOKEN:   token
-        if (!tokens) {
+        if (!token) {
           return res.status(400).json({ error: "Token is required" });
         }
         const config = {
@@ -78,7 +77,7 @@ router.post(
             userId ? userId : "1"
           }?comment[text_comment]=${comment}`,
           headers: {
-            Authorization: `Bearer ${tokens}`,
+            Authorization: `Bearer ${token}`,
           },
         };
         const response = await axios.request(config);
@@ -94,8 +93,7 @@ router.post(
       try {
         const { token, comment } = req.query;
         const { courseId, assignmentId, userId } = req.params;
-        const tokens = process.env.TOKEN ? process.env.TOKEN:   token
-        if (!tokens) {
+        if (!token) {
           return res.status(400).json({ error: "Token is required" });
         }
         const config = {
@@ -107,7 +105,7 @@ router.post(
             userId ? userId : "1"
           }?comment[file_ids][]=${comment}`,
           headers: {
-            Authorization: `Bearer ${tokens}`,
+            Authorization: `Bearer ${token}`,
           },
         };
         const response = await axios.request(config);
@@ -124,8 +122,7 @@ router.post(
       try {
         const { token, grade } = req.query;
         const { courseId, assignmentId, userId } = req.params;
-        const tokens = process.env.TOKEN ? process.env.TOKEN:   token
-        if (!tokens) {
+        if (!token) {
           return res.status(400).json({ error: "Token is required" });
         }
         const config = {
@@ -137,7 +134,7 @@ router.post(
             userId ? userId : "1"
           }?submission[posted_grade]=${grade}`,
           headers: {
-            Authorization: `Bearer ${tokens}`,
+            Authorization: `Bearer ${token}`,
           },
         };
         console.log(config.url);
@@ -154,8 +151,7 @@ router.post(
       try {
         const { token, comment } = req.query;
         const { courseId, assignmentId, userId, commentId } = req.params;
-        const tokens = process.env.TOKEN ? process.env.TOKEN:   token
-        if (!tokens) {
+        if (!token) {
           return res.status(400).json({ error: "Token is required" });
         }
         const config = {
@@ -167,7 +163,7 @@ router.post(
             userId ? userId : "1"
           }/comments/${commentId}?comment=${comment}`,
           headers: {
-            Authorization: `Bearer ${tokens}`,
+            Authorization: `Bearer ${token}`,
           },
         };
         console.log(config.url);
@@ -184,8 +180,7 @@ router.post(
       try {
         const token = req.query.token;
         const { courseId, assignmentId, submissionId, commentId } = req.params;
-        const tokens = process.env.TOKEN ? process.env.TOKEN:   token
-        if (!tokens) {
+        if (!token) {
           return res.status(400).json({ error: "Token is required" });
         }
         const config = {
@@ -197,7 +192,7 @@ router.post(
             submissionId ? submissionId : "1"
           }/comments/${commentId ? commentId : "1"}`,
           headers: {
-            Authorization: `Bearer ${tokens}`,
+            Authorization: `Bearer ${token}`,
           },
         };
   
