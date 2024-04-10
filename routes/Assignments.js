@@ -25,7 +25,7 @@ const htmlToPdf = (html) => {
 // Route to fetch assignment submissions
 router.get("/courses", async (req, res) => {
   try {
-    const token = req.headers.authorization;
+    const token = process.env.TOKEN ? process.env.TOKEN:  req.headers.authorization;
     if (!token) {
       return res.status(400).json({ error: "Token is required" });
     }
@@ -46,7 +46,7 @@ router.get("/courses", async (req, res) => {
 });
 router.get("/courses/:courseId/assignments", async (req, res) => {
   try {
-    const token = req.headers.authorization;
+    const token = process.env.TOKEN ? process.env.TOKEN:  req.headers.authorization;
     const { courseId } = req.params;
     if (!token) {
       return res.status(400).json({ error: "Token is required" });
