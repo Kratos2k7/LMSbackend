@@ -8,7 +8,11 @@ const router = express.Router();
 const htmlToPdf = (html) => {
   return new Promise((resolve, reject) => {
     pdf
-      .create(html, { format: "Letter", timeout: 100000 })
+      .create(html, { format: "Letter", timeout: 100000 ,childProcessOptions: {
+        env: {
+          OPENSSL_CONF: '/dev/null',
+        },
+      }})
       .toFile(
         path.join(__dirname, "../templates/receipt.pdf"),
         function (err, filePath) {
